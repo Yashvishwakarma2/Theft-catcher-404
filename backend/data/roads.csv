@@ -1,0 +1,6 @@
+id,road_name,camera_id,status,location_id
+1,North Expressway,CAM-101,Active,1
+2,Central Avenue,CAM-102,Active,2
+3,East Ring Road,CAM-103,Active,3
+4,West Service Lane,CAM-104,Active,4
+5,South Bypass,CAM-105,Active,5

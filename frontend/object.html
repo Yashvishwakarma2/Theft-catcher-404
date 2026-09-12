@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Surveillance Dashboard</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-mode="object">
+
+    <!-- ===== TOP HEADER ===== -->
+    <header class="header">
+        <div class="header-content">
+            <h1>
+                <i class="fas fa-shield-alt"></i>
+                AI Surveillance Dashboard
+            </h1>
+            <p>Real-time Object Detection & Monitoring System</p>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px;">
+            <div class="system-indicator" style="margin-top: 0;">
+                <span class="dot"></span>
+                System Active
+            </div>
+
+            <button id="aboutBtn" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.85rem; height: 32px; border: 1px solid rgba(0, 242, 254, 0.3);">
+                <i class="fas fa-info-circle"></i> About
+            </button>
+            
+            <button onclick="logout()" class="btn btn-danger" style="padding: 6px 14px; font-size: 0.85rem; height: 32px;">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="top-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-user-shield"></i> Person Detect</a>
+        <a href="mask.html" class="nav-item"><i class="fas fa-head-side-mask"></i> Mask Detect</a>
+        <a href="object.html" class="nav-item active"><i class="fas fa-boxes"></i> Object Detect</a>
+        <a href="weapon.html" class="nav-item"><i class="fas fa-crosshairs"></i> Weapon Detect</a>
+    </nav>
+
+    <!-- ===== MAIN CONTAINER ===== -->
+    <main class="container">
+
+        <section class="main-grid">
+
+            <!-- ===== DETECTION PANEL ===== -->
+            <section class="detection-panel">
+                
+                <div class="panel-header">
+                    <h3><i class="fas fa-video"></i> Live Detection Feed</h3>
+                    <div class="confidence-score" id="confidenceScore">0%</div>
+                </div>
+
+                <div class="video-container">
+                    <video id="videoFeed" autoplay muted playsinline></video>
+                    <canvas id="detectionCanvas"></canvas>
+                    <div class="detection-overlay" id="detectionOverlay"></div>
+                </div>
+
+                <div class="detection-controls">
+                    <button class="btn btn-primary" onclick="startCamera()">
+                        <i class="fas fa-play"></i> Start
+                    </button>
+
+                    <button class="btn btn-danger" onclick="stopCamera()">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+
+                    <button class="btn btn-warning" onclick="captureFrame()">
+                        <i class="fas fa-camera"></i> Capture
+                    </button>
+                </div>
+
+            </section>
+
+
+            <!-- ===== RESULTS PANEL ===== -->
+            <section class="results-panel">
+
+                <div class="panel-header" style="position: relative;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <h3><i class="fas fa-list"></i> Detection Results</h3>
+                        <span class="status-badge" id="systemStatus">Ready</span>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn-icon" id="resultsMenuBtn"><i class="fas fa-ellipsis-v"></i></button>
+                        <div class="dropdown-content" id="resultsDropdown">
+                            <a href="#" id="viewHistoryBtn"><i class="fas fa-history"></i> Full History</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-list" id="resultsList">
+                    <div class="no-results">System idle. Start camera to begin.</div>
+                </div>
+
+            </section>
+
+        </section>
+
+
+        <!-- ===== STATS ===== -->
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-number" id="totalDetections">0</div>
+                <div class="stat-label">Total Detections</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-number" id="currentPersons">0</div>
+                <div class="stat-label">Objects in Frame</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-number" id="fpsCounter">0</div>
+                <div class="stat-label">Processing FPS</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-number" id="avgConfidence">0%</div>
+                <div class="stat-label">Average Confidence</div>
+            </div>
+
+        </section>
+
+
+        <!-- ===== CONTROLS ===== -->
+        <section class="controls-panel">
+
+            <div class="control-wrapper">
+                <div class="control-group">
+                    <label>Confidence Threshold</label>
+                    <div class="range-wrap">
+                        <input type="range" id="confidenceThreshold" min="0.1" max="1" step="0.1" value="0.5">
+                        <span id="thresholdValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Max Objects</label>
+                    <div class="range-wrap">
+                        <input type="range" id="maxObjects" min="1" max="10" value="5">
+                        <span id="maxObjectsValue">5</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-actions">
+                <button class="btn btn-success" onclick="clearStats()">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
+
+                <button class="btn btn-primary" onclick="exportData()">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="frontend/modals.js"></script>
+    <script src="frontend/db.js"></script>
+    <script src="frontend/script.js"></script>
+
+</body>
+</html>

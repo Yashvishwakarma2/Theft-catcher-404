@@ -1,0 +1,6 @@
+id,location_name,zone,status,latitude,longitude
+1,Main Entrance Gate,Zone-A,Active,28.6139,77.2090
+2,Central Plaza,Zone-B,Active,28.6145,77.2095
+3,East Parking Garage,Zone-C,Active,28.6150,77.2100
+4,West Storage Building,Zone-D,Active,28.6130,77.2080
+5,North Perimeter Fence,Zone-E,Maintenance,28.6160,77.2085

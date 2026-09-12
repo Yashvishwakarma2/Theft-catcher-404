@@ -1,0 +1,36 @@
+# Flask Framework
+Flask==3.0.3
+Werkzeug==3.0.1
+Jinja2==3.1.2
+
+# Web Framework Extensions
+Flask-CORS==4.0.0
+Flask-SQLAlchemy==3.1.1
+Flask-Session==0.5.0
+
+# Database
+SQLAlchemy==2.0.23
+alembic==1.12.1
+
+# Image Processing
+# opencv-python-headless>=4.9.0  # optional, install manually if backend camera routes are needed
+Pillow>=10.1.0
+
+# Security & Authentication
+PyJWT==2.12.1
+# cryptography==41.0.7  # optional; avoid on Python 3.13 free-threaded builds
+
+# Data Processing
+## numpy>=1.26.0,<2.0  # optional; remove on 32-bit/unsupported Python builds
+python-dotenv==1.0.0
+
+# API & Request Handling
+requests==2.31.0
+python-dateutil==2.8.2
+
+# Utilities
+click>=8.0.0
+colorama>=0.4.6
+
+# Production Server
+gunicorn>=21.0.0
